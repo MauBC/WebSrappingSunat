@@ -186,7 +186,15 @@ if __name__ == "__main__":
 
     cursor = conn.cursor()
 
-    # === INSERTAR EN dbo.TipoCambio ===
+    # === ACTUALIZAR Y INSERTAR ===
+    print(f"🔄 Desactivando registros existentes para fecha {fecha_db}...")
+    update_query = """
+    UPDATE dbo.TipoCambio
+    SET EstadoRegistro = 0
+    WHERE Fecha = ? AND EstadoRegistro = 1;
+    """
+    cursor.execute(update_query, fecha_db)
+
     query = """
     INSERT INTO dbo.TipoCambio
         (Fecha, ValorCompra, ValorVenta, EstadoRegistro, UsuarioCreacion, FechaHoraCreacion)
